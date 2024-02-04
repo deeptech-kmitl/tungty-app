@@ -23,6 +23,7 @@ interface PartyItem {
   name: string
   imagepath: string
   people: number
+  date: string
   color: string
 }
 
@@ -33,11 +34,13 @@ const partylist: PartyItem[] = [
     name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
     imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
     people: 8,
+    date: "2023-01-13",
     color: "#FDE619",
   },
   {
     name: "เล่นเกมกันเพื่อนๆ",
     imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
     people: 23,
     color: "#BEAEFF",
   },
@@ -45,17 +48,31 @@ const partylist: PartyItem[] = [
 
 export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartyScreen() {
   // Handle search functionality
-  const handleSearch = (query: string) => {
+  const handleSearch = (search: string) => {
     // Implement your search logic here
+    console.log(search)
+    const searchResult = partylist.filter((element) => element.name.toLowerCase().includes(search.toLowerCase()));
+    console.log(searchResult)
+    setRenderList(searchResult)
   }
 
   // Handle sorting/filtering functionality
-  const handleSortFilter = () => {
-    // Implement your sorting/filtering logic here
+  const handleSortFilter = (value: string) => {
+    if (value === "popular") {
+      renderList.sort((b, a) => a.people - b.people)
+    } else if (value === "newest") {
+      renderList.sort((b, a) => Date.parse(a.date) - Date.parse(b.date))
+    }
+    else {
+      renderList.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+    }
+    setModalVisible(!modalVisible)
   }
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedOption, setSelectedOption] = useState("")
+  const [search,  setSearch] = useState("")
+  const [renderList, setRenderList] = useState<PartyItem[]>(partylist);
 
   const renderPartyCard = ({ item }: { item: PartyItem }) => (
     <TouchableOpacity style={[styles.partyCard, { backgroundColor: item.color }]}>
@@ -83,10 +100,10 @@ export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartySc
           </TouchableOpacity>
         </View>
         <View style={styles.searchBar}>
-          <TextInput style={styles.input} onChangeText={handleSearch} placeholder="Search" />
+          <TextInput style={styles.input} onChangeText={setSearch} placeholder="Search" />
           <TouchableOpacity
             onPress={() => {
-              /* Handle bell icon press */
+              handleSearch(search)
             }}
           >
             <View style={styles.searchIcon}>
@@ -121,21 +138,21 @@ export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartySc
                   value={selectedOption}
                 >
                   <View style={styles.radioButton}>
-                    <RadioButton.Android value="option1" color="white" />
+                    <RadioButton.Android value="popular" color="white" />
                     <Text style={styles.radioText}>ยอดนิยม</Text>
                   </View>
                   <View style={styles.radioButton}>
-                    <RadioButton.Android value="option2" color="white" />
+                    <RadioButton.Android value="newest" color="white" />
                     <Text style={styles.radioText}>ใหม่ล่าสุด</Text>
                   </View>
                   <View style={styles.radioButton}>
-                    <RadioButton.Android value="option3" color="white" />
+                    <RadioButton.Android value="oldest" color="white" />
                     <Text style={styles.radioText}>เก่าที่สุด</Text>
                   </View>
                 </RadioButton.Group>
               </View>
 
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <TouchableOpacity onPress={() => handleSortFilter(selectedOption)}>
                 <View style={styles.confirmButton}>
                   {/* RadioButton */}
                   <Text>Okay</Text>
@@ -146,7 +163,8 @@ export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartySc
         </View>
         <View>
           <FlatList
-            data={partylist}
+            key={renderList.length}
+            data={renderList}
             renderItem={renderPartyCard}
             keyExtractor={(item, index) => index.toString()}
             numColumns={2}
