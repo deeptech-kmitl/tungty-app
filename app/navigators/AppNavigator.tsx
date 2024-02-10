@@ -66,7 +66,13 @@ const AppStack = observer(function AppStack() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
+      screenOptions={{
+        headerShown: false,
+        navigationBarColor: colors.background,
+        headerStyle: {
+          backgroundColor: "#4542C1",
+        },
+      }}
       initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
       {isAuthenticated ? (
@@ -78,9 +84,20 @@ const AppStack = observer(function AppStack() {
       ) : (
         <>
           {/* <Stack.Screen name="Login" component={Screens.LoginScreen} /> */}
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
 
-          <Stack.Screen name="Signup" component={SignUpScreen} />
+          <Stack.Screen
+            name="Signup"
+            component={SignUpScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerBackTitleVisible: false,
+            }}
+          />
         </>
       )}
 

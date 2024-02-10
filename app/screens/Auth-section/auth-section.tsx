@@ -1,6 +1,7 @@
+import { useStores } from "app/models/helpers/useStores"
 import { AppStackScreenProps } from "app/navigators"
 import { observer } from "mobx-react-lite"
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { TextStyle, View, ViewStyle, Text, TextInput, TouchableOpacity } from "react-native"
 // import { useNavigation } from "@react-navigation/native";
 
@@ -8,18 +9,65 @@ interface LoginProps extends AppStackScreenProps<"Login"> {}
 
 const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
   // const LoginScreen = () => {
-  const [Username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [AuthPassword, setAuthPassword] = useState("")
+  // const [isSubmitted, setIsSubmitted] = useState(false)
+  const [attemptsCount, setAttemptsCount] = useState(0)
+  const [validationError, setValidationError] = useState("")
+  const {
+    authenticationStore: { authEmail, setAuthEmail, setAuthToken },
+  } = useStores()
+
+  useEffect(() => {
+    // Here is where you could fetch credentials from keychain or storage
+    // and pre-fill the form fields.
+    setAuthEmail("ignite@infinite.red")
+    setAuthPassword("")
+
+    // Return a "cleanup" function that React will run when the component unmounts
+    return () => {
+      setAuthPassword("")
+      setAuthEmail("")
+    }
+  }, [])
 
   const { navigation } = _props
 
   function goNext() {
+    setAuthPassword("")
+    setAuthEmail("")
+    setValidationError("")
     navigation.navigate("Signup")
   }
 
-  const handleLogin = () => {
-    // Handle login logic here
-    console.log("Logging in with:", Username, password)
+  function login() {
+    // setIsSubmitted(true)
+    setAttemptsCount(attemptsCount + 1)
+
+    // Basic validation: Check if email and password are not empty
+    if (!authEmail || !AuthPassword) {
+      setValidationError("Email and password are required.")
+      return
+    }
+
+    setValidationError("")
+    // You can add more sophisticated validation here if needed
+
+    // If validation passes, attempt login
+    authenticateUser()
+  }
+
+  function authenticateUser() {
+    // setIsSubmitted(true)
+    // setAttemptsCount(attemptsCount + 1)
+
+    // Make a request to your server to get an authentication token.
+    // If successful, reset the fields and set the token.
+    // setIsSubmitted(false)
+    setAuthPassword("")
+    setAuthEmail("")
+
+    // We'll mock this with a fake token.
+    setAuthToken(String(Date.now()))
   }
 
   return (
@@ -32,9 +80,9 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
         Username
       </Text>
       <TextInput
-        value={Username}
-        onChangeText={setUsername}
-        style={$textField}
+        value={authEmail}
+        onChangeText={setAuthEmail}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
@@ -46,9 +94,9 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
         Password
       </Text>
       <TextInput
-        value={password}
-        onChangeText={setPassword}
-        style={$textField}
+        value={AuthPassword}
+        onChangeText={setAuthPassword}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
@@ -59,18 +107,40 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           onPress={() => {
-            handleLogin()
+            login()
           }}
         >
-          <Text style={$tapButton}>SIGN IN</Text>
+          <Text
+            style={{
+              ...$tapButtonL,
+              color: "#4542C1",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            SIGN IN
+          </Text>
         </TouchableOpacity>
+
+        {validationError ? <Text style={{ color: "red" }}>{validationError}</Text> : null}
 
         <TouchableOpacity
           onPress={() => {
             goNext()
           }}
         >
-          <Text style={$tapButtonR}>สมัครสมาชิก</Text>
+          <Text
+            style={{
+              ...$tapButtonR,
+              textAlign: "center",
+              color: "#4542C1",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            สมัครสมาชิก
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -81,16 +151,33 @@ interface SignUpProps extends AppStackScreenProps<"Signup"> {}
 
 const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
   const [Name, setName] = useState("")
-  const [Username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [AuthPassword, setAuthPassword] = useState("")
   const [ConfirmPassword, setConfirmPassword] = useState("")
-  
+  const [validationError, setValidationError] = useState("")
+  const {
+    authenticationStore: { authEmail, setAuthEmail },
+  } = useStores()
+
   const { navigation } = _props
 
   const goback = () => {
     // Your sign up logic
-    navigation.navigate("Login"); // Navigate back to previous screen
-  };
+    navigation.navigate("Login") // Navigate back to previous screen
+  }
+
+  function ValidateSignup() {
+    // Basic validation
+    if (!Name || !authEmail || !AuthPassword || !ConfirmPassword) {
+      setValidationError("All fill are required.")
+      return
+    } else if (AuthPassword !== ConfirmPassword) {
+      setValidationError("Passwords are not the same.")
+      return
+    }
+    // Clear any previous validation error
+    setValidationError("")
+    goback()
+  }
 
   // const handleSignUp = () => {
   //   // Handle signup logic here
@@ -109,7 +196,7 @@ const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
       <TextInput
         value={Name}
         onChangeText={setName}
-        style={$textField}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoCorrect={false}
         keyboardType="email-address"
@@ -120,9 +207,9 @@ const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
         Username
       </Text>
       <TextInput
-        value={Username}
-        onChangeText={setUsername}
-        style={$textField}
+        value={authEmail}
+        onChangeText={setAuthEmail}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoComplete="email"
         autoCorrect={false}
@@ -137,9 +224,9 @@ const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
         กรอกตัวอักษรและตัวเลข 8 ตัว (ตัวอักษร, ตัวเลข, สัญลักษณ์)
       </Text>
       <TextInput
-        value={password}
-        onChangeText={setPassword}
-        style={$textField}
+        value={AuthPassword}
+        onChangeText={setAuthPassword}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
@@ -148,12 +235,12 @@ const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
       />
 
       <Text testID="login-heading" style={$label}>
-        ConfirmPassword
+        Confirm Password
       </Text>
       <TextInput
         value={ConfirmPassword}
         onChangeText={setConfirmPassword}
-        style={$textField}
+        style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"
         autoComplete="password"
         autoCorrect={false}
@@ -161,13 +248,24 @@ const SignUpScreen: FC<SignUpProps> = observer(function SignUp(_props) {
         placeholder=""
       />
 
-      <View style={{ alignItems: "center" }}>
+      <View style={{ alignItems: "center", marginTop: 36 }}>
+        {validationError ? <Text style={{ color: "red" }}>{validationError}</Text> : null}
         <TouchableOpacity
           onPress={() => {
-            goback()
+            ValidateSignup()
           }}
         >
-          <Text style={$tapButtonU}>SIGN UP</Text>
+          <Text
+            style={{
+              ...$tapButtonU,
+              color: "#4542C1",
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: 18,
+            }}
+          >
+            SIGN UP
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -202,43 +300,30 @@ const $textField: ViewStyle = {
   borderRadius: 30,
   backgroundColor: "white",
   width: "100%",
-  fontWeight: "bold",
-  fontSize: 15,
 }
 
-const $tapButton: ViewStyle = {
+const $tapButtonL: ViewStyle = {
+  marginBottom: 36,
   marginTop: 24,
   borderRadius: 30,
   backgroundColor: "#FDC319",
   padding: 15,
-  color: "#4542C1",
-  textAlign: "center",
   width: 270,
-  fontWeight: "bold",
-  fontSize: 18,
 }
 
 const $tapButtonR: ViewStyle = {
-  marginTop: 90,
+  marginTop: 36,
   backgroundColor: "white",
   padding: 18,
-  color: "#4542C1",
-  textAlign: "center",
   width: 270,
-  fontWeight: "bold",
-  fontSize: 18,
 }
 
 const $tapButtonU: ViewStyle = {
-  marginTop: 90,
+  marginTop: 36,
   borderRadius: 30,
   backgroundColor: "#FDC319",
   padding: 15,
-  color: "#4542C1",
-  textAlign: "center",
   width: 270,
-  fontWeight: "bold",
-  fontSize: 18,
 }
 
 export { LoginScreen, SignUpScreen }
