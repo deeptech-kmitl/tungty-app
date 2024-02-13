@@ -20,6 +20,8 @@ import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
+import { LoginScreen } from "../screens/Auth-section/auth-section"
+import { SignUpScreen } from "../screens/Auth-section/auth-section"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -37,6 +39,7 @@ import { colors } from "app/theme"
 export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
+  Signup: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
@@ -63,7 +66,13 @@ const AppStack = observer(function AppStack() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
+      screenOptions={{
+        headerShown: false,
+        navigationBarColor: colors.background,
+        headerStyle: {
+          backgroundColor: "#4542C1",
+        },
+      }}
       initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
       {isAuthenticated ? (
@@ -74,7 +83,21 @@ const AppStack = observer(function AppStack() {
         </>
       ) : (
         <>
-          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          {/* <Stack.Screen name="Login" component={Screens.LoginScreen} /> */}
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
+
+          <Stack.Screen
+            name="Signup"
+            component={SignUpScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerBackTitleVisible: false,
+            }}
+          />
         </>
       )}
 
