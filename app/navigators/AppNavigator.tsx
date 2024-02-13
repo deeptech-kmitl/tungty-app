@@ -42,6 +42,8 @@ export type AppStackParamList = {
   Signup: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
+  MyProfile: undefined
+	EditProfile: undefined
   MyParty: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -78,9 +80,9 @@ const AppStack = observer(function AppStack() {
     >
       {isAuthenticated ? (
         <>
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
+          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
-          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="Demo" component={DemoNavigator} /> */}
         </>
       ) : (
         <>
@@ -101,6 +103,11 @@ const AppStack = observer(function AppStack() {
           />
         </>
       )}
+
+      {/** 🔥 Your screens go here */}
+      <Stack.Screen name="MyProfile" component={Screens.MyProfileScreen} />
+			<Stack.Screen name="EditProfile" component={Screens.EditProfileScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
