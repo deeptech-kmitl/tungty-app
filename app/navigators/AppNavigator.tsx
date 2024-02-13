@@ -17,9 +17,11 @@ import { useColorScheme } from "react-native"
 import * as Screens from "app/screens"
 import Config from "../config"
 import { useStores } from "../models"
-import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
+import { DemoNavigator, DemoTabParamList } from "./MainNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
+import { LoginScreen } from "../screens/Auth-section/auth-section"
+import { SignUpScreen } from "../screens/Auth-section/auth-section"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -37,6 +39,7 @@ import { colors } from "app/theme"
 export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
+  Signup: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   CreateParty: undefined;
   EditParty: undefined;
@@ -46,6 +49,9 @@ export type AppStackParamList = {
   JoinPartyPopup: undefined;
   FilterPartyPopup: undefined;
   // 🔥 Your screens go here
+  MyProfile: undefined
+  EditProfile: undefined
+  MyParty: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -70,36 +76,57 @@ const AppStack = observer(function AppStack() {
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Login" : "Welcome"}
+      screenOptions={{
+        headerShown: false,
+        navigationBarColor: colors.background,
+        headerStyle: {
+          backgroundColor: "#4542C1",
+        },
+      }}
+      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
       {isAuthenticated ? (
         <>
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          <Stack.Screen name="Demo" component={DemoNavigator} />
+          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
 
-          <Stack.Screen name="CreateParty" component={Screens.CreatePartyScreen} />
-          <Stack.Screen name="EditParty" component={Screens.EditPartyScreen} />
-          <Stack.Screen name="PartyInfo" component={Screens.PartyInfoScreen} />
-
-          <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
-          <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
-          <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
+          <Stack.Screen name="Demo" component={DemoNavigator} /> */}
         </>
       ) : (
         <>
-          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          {/* <Stack.Screen name="Login" component={Screens.LoginScreen} /> */}
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+          />
+
+          <Stack.Screen
+            name="Signup"
+            component={SignUpScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerBackTitleVisible: false,
+            }}
+          />
         </>
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="MyProfile" component={Screens.MyProfileScreen} />
+      <Stack.Screen name="EditProfile" component={Screens.EditProfileScreen} />
+      <Stack.Screen name="CreateParty" component={Screens.CreatePartyScreen} />
+      <Stack.Screen name="EditParty" component={Screens.EditPartyScreen} />
+      <Stack.Screen name="PartyInfo" component={Screens.PartyInfoScreen} />
+      <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
+      <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
+      <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
 
 export interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()
