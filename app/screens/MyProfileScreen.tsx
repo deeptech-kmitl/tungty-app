@@ -5,6 +5,7 @@ import { AppStackScreenProps } from "app/navigators";
 import { Screen } from "app/components";
 import { Avatar, Text, Button } from "@rneui/base";
 
+
 interface MyProfileScreenProps extends AppStackScreenProps<"MyProfile"> { }
 
 export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyProfileScreen() {
@@ -32,17 +33,17 @@ export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyPro
           <Button
             title="SIGN OUT"
             buttonStyle={{
-              backgroundColor: '#d9d9d9',
+              backgroundColor: '#FDC319',
               borderWidth: 2,
-              borderColor: 'd9d9d9',
               borderRadius: 30,
+              
             }}
             containerStyle={{
               width: 200,
               marginHorizontal: 50,
               marginVertical: 10,
             }}
-            titleStyle={{ color: '#4542C1', fontWeight: 'bold' }}
+            titleStyle={{ color: '4542C1', fontWeight: 'bold' }}
           />
         </View>
       </View>
