@@ -41,11 +41,18 @@ export type AppStackParamList = {
   Login: undefined
   Signup: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
+  CreateParty: undefined;
+  EditParty: undefined;
+  PartyInfo: undefined;
+
+  FindParty: undefined;
+  JoinPartyPopup: undefined;
+  FilterPartyPopup: undefined;
   // 🔥 Your screens go here
   MyProfile: undefined
-	EditProfile: undefined
+  EditProfile: undefined
   MyParty: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -106,14 +113,20 @@ const AppStack = observer(function AppStack() {
 
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="MyProfile" component={Screens.MyProfileScreen} />
-			<Stack.Screen name="EditProfile" component={Screens.EditProfileScreen} />
-			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="EditProfile" component={Screens.EditProfileScreen} />
+      <Stack.Screen name="CreateParty" component={Screens.CreatePartyScreen} />
+      <Stack.Screen name="EditParty" component={Screens.EditPartyScreen} />
+      <Stack.Screen name="PartyInfo" component={Screens.PartyInfoScreen} />
+      <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
+      <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
+      <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
+      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
 
 export interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
   const colorScheme = useColorScheme()

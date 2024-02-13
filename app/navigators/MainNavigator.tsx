@@ -5,14 +5,21 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { FindPartyscreen, Profilescreen, DemoShowroomScreen } from "../screens"
+import { CreatePartyScreen,FilterPartyPopupScreen } from "../screens"
+import { FindPartyscreen, Profilescreen, } from "../screens"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { MyPartyScreen } from '../screens/My Party/MyPartyScreen';
 
 export type DemoTabParamList = {
-  FindParty: undefined
   DemoShowroom: { queryIndex?: string; itemIndex?: string }
+  DemoDebug: undefined
+  DemoPodcastList: undefined
+  CreateParty: undefined
+  // PartyInfo: undefined
+  FindParty: undefined
+  JoinPartyPopup: undefined
+  FilterPartyPopup: undefined
   Profile: undefined
   MyParty: undefined
 }
@@ -46,8 +53,8 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
-        name="DemoShowroom"
-        component={DemoShowroomScreen}
+        name="CreateParty"
+        component={CreatePartyScreen}
         options={{
           tabBarLabel: translate("demoNavigator.componentsTab"),
           tabBarIcon: ({ focused }) => (
