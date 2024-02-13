@@ -5,17 +5,18 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen } from "../screens"
-import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
+import { FindPartyscreen, Profilescreen, DemoShowroomScreen } from "../screens"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+import { MyPartyScreen } from '../screens/My Party/MyPartyScreen';
 
 export type DemoTabParamList = {
-  DemoCommunity: undefined
+  FindParty: undefined
   DemoShowroom: { queryIndex?: string; itemIndex?: string }
-  DemoDebug: undefined
-  DemoPodcastList: undefined
+  Profile: undefined
+  MyParty: undefined
 }
+
 
 /**
  * Helper for automatically generating navigation prop types for each route.
@@ -56,10 +57,21 @@ export function DemoNavigator() {
       />
 
       <Tab.Screen
-        name="DemoCommunity"
-        component={DemoCommunityScreen}
+        name="MyParty"
+        component={MyPartyScreen}
         options={{
-          tabBarLabel: translate("demoNavigator.communityTab"),
+          tabBarLabel: "MyParty",
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="view" color={focused ? colors.tint : undefined} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="FindParty"
+        component={FindPartyscreen}
+        options={{
+          tabBarLabel: "หาปาร์ตี้",
           tabBarIcon: ({ focused }) => (
             <Icon icon="community" color={focused ? colors.tint : undefined} size={30} />
           ),
@@ -67,22 +79,10 @@ export function DemoNavigator() {
       />
 
       <Tab.Screen
-        name="DemoPodcastList"
-        component={DemoPodcastListScreen}
+        name="Profile"
+        component={Profilescreen}
         options={{
-          tabBarAccessibilityLabel: translate("demoNavigator.podcastListTab"),
-          tabBarLabel: translate("demoNavigator.podcastListTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="podcast" color={focused ? colors.tint : undefined} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="DemoDebug"
-        component={DemoDebugScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator.debugTab"),
+          tabBarLabel: "โปรไฟล์",
           tabBarIcon: ({ focused }) => (
             <Icon icon="debug" color={focused ? colors.tint : undefined} size={30} />
           ),
@@ -93,7 +93,7 @@ export function DemoNavigator() {
 }
 
 const $tabBar: ViewStyle = {
-  backgroundColor: colors.background,
+  backgroundColor: "#FDC319",
   borderTopColor: colors.transparent,
 }
 
