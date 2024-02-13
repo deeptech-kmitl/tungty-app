@@ -38,6 +38,13 @@ export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
+  CreateParty: undefined;
+  EditParty: undefined;
+  PartyInfo: undefined;
+
+  FindParty: undefined;
+  JoinPartyPopup: undefined;
+  FilterPartyPopup: undefined;
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -64,13 +71,20 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
+      initialRouteName={isAuthenticated ? "Login" : "Welcome"}
     >
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
           <Stack.Screen name="Demo" component={DemoNavigator} />
+
+          <Stack.Screen name="CreateParty" component={Screens.CreatePartyScreen} />
+          <Stack.Screen name="EditParty" component={Screens.EditPartyScreen} />
+          <Stack.Screen name="PartyInfo" component={Screens.PartyInfoScreen} />
+
+          <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
+          <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
+          <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
         </>
       ) : (
         <>
