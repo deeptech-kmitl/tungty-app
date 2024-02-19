@@ -17,3 +17,5 @@ export * from "./MyProfileScreen"
 export * from "./EditProfileScreen"
 export * from "./My Party/MyPartyScreen"
 export * from "./Auth-section/auth-section"
+
+export * from "../../assets/images/Party_image/partyImages"

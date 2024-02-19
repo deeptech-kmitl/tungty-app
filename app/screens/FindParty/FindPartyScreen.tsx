@@ -19,10 +19,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Octicons from "react-native-vector-icons/Octicons";
 import { RadioButton } from "react-native-paper";
 import CreatePartyFloatButton from "app/components/CreatePartyFloatButton";
+import partyImages from "assets/images/Party_image/partyImages";
+import { useNavigation } from '@react-navigation/native';
 
 interface PartyItem {
   name: string;
-  imagepath: string;
+  imageKey: keyof typeof partyImages;
   people: number;
   date: string;
   color: string;
@@ -34,7 +36,7 @@ interface FindPartyScreenProps extends AppStackScreenProps<"FindParty"> {}
 const partylist: PartyItem[] = [
   {
     name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    imageKey: "foodImg",
     people: 8,
     date: "2023-01-13",
     color: "#FDE619",
@@ -42,7 +44,7 @@ const partylist: PartyItem[] = [
   },
   {
     name: "เล่นเกมกันเพื่อนๆ",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    imageKey: "entertainImg",
     date: "2016-04-10",
     people: 23,
     color: "#BEAEFF",
@@ -50,31 +52,31 @@ const partylist: PartyItem[] = [
   },
   {
     name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    imageKey: "eduImg",
     people: 8,
     date: "2023-01-13",
-    color: "#FDE619",
-    category: "อาหาร",
+    color: "#AEF5FF",
+    category: "การเรียน",
   },
   {
     name: "เล่นเกมกันเพื่อนๆ",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    imageKey: "sportImg",
     date: "2016-04-10",
     people: 23,
-    color: "#BEAEFF",
-    category: "บันเทิง",
+    color: "#BCFF66",
+    category: "สุขภาพ",
   },
   {
     name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    imageKey: "travelImg",
     people: 8,
     date: "2023-01-13",
-    color: "#FDE619",
-    category: "อาหาร",
+    color: "#FF7B93",
+    category: "ท่องเที่ยว",
   },
   {
     name: "เล่นเกมกันเพื่อนๆ",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    imageKey: "entertainImg",
     date: "2016-04-10",
     people: 23,
     color: "#BEAEFF",
@@ -114,9 +116,15 @@ export const FindPartyScreen: FC<FindPartyScreenProps> = observer(
     const [search, setSearch] = useState("");
     const [renderList, setRenderList] = useState<PartyItem[]>(partylist);
 
+    const navigation = useNavigation();
+    const handleCardPress = () => {
+      // Navigate to the other screen here
+      navigation.navigate('JoinPartyPopup');
+    };
+
     const renderPartyCard = ({ item }: { item: PartyItem }) => (
-      <TouchableOpacity style={[styles.partyCard, { backgroundColor: item.color }]}>
-        <Image source={{ uri: item.imagepath }} style={styles.partyImage} />
+      <TouchableOpacity style={[styles.partyCard, { backgroundColor: item.color }]} onPress={handleCardPress}>
+        <Image source={partyImages[item.imageKey]} style={styles.partyImage} />
         <View style={styles.partyDetails}>
           <Text style={styles.partyName}>{item.name}</Text>
           <View style={styles.icons}>
@@ -148,7 +156,6 @@ export const FindPartyScreen: FC<FindPartyScreenProps> = observer(
           <View style={styles.topBar}>
             <TouchableOpacity
               onPress={() => {
-
               }}
               >
                 <MaterialCommunityIcons name="bell-ring" size={30} color="#FFC107" />
@@ -335,11 +342,6 @@ const styles = {
   //   shadowRadius: 3.84,
   //   marginBottom: 8,
   // } as ViewStyle,
-
-
-
-
-
   radioButtonContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -416,7 +418,9 @@ const styles = {
   } as ViewStyle,
 
   partyName: {
-    fontSize: 12,
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#4542C1'
   } as TextStyle,
 
   icons: {

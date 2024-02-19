@@ -23,7 +23,7 @@ export const JoinPartyPopupScreen: FC<JoinPartyPopupScreenProps> = observer(() =
           </TouchableOpacity>
           <View style={containerPicture}>
         <Image
-          source={require("../../../assets/images/foodParty_icon.png")}
+          source={require("../../../assets/images/Party_image/food.png")}
           style={{ width: 120, height: 120, resizeMode: 'contain' }}
         />
       </View>

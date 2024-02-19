@@ -24,7 +24,7 @@ export const EditPartyScreen: FC<EditPartyScreenProps> = observer(function EditP
       </View>
       <View style={containerPicture}>
         <Image
-          source={require("../../../assets/images/foodParty_icon.png")}
+          source={require("../../../assets/images/Party_image/food.png")}
           style={{ width: 90, height: 90, resizeMode: 'contain' }}
         />
       </View>

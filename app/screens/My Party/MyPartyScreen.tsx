@@ -118,15 +118,17 @@ export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartySc
 
   const renderPartyCard = ({ item }: { item: PartyItem }) => (
     <TouchableOpacity style={[styles.partyCard, { backgroundColor: item.color }]}>
+    <View style={styles.imageContainer}>
       <Image source={{ uri: item.imagepath }} style={styles.partyImage} />
-      <View style={styles.partyDetails}>
-        <Text style={styles.partyName}>{item.name}</Text>
-        <View style={styles.icons}>
-          <FontAwesome name="user" size={20} color="#FFC107" />
-          <Text>{item.people}</Text>
-        </View>
+    </View>
+    <View style={styles.textContainer}>
+      <Text style={styles.partyName}>{item.name}</Text>
+      <View style={styles.icons}>
+        <FontAwesome name="user" size={20} color="#FFC107" />
+        <Text>{item.people}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
+  </TouchableOpacity>
   )
 
   return (
@@ -223,6 +225,49 @@ const $root: ViewStyle = {
 }
 
 const styles = {
+  partyCard: {
+    width: "45%",
+    backgroundColor: "#ffffff",
+    margin: 10,
+    padding: 10, // ลด padding ของ partyCard ลงเพื่อให้คอลัมแยกกันได้ดีขึ้น
+    borderRadius: 10,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    marginHorizontal: 10,
+    marginBottom: 8,
+    flexDirection: "row",
+  } as ViewStyle,
+
+  imageContainer: {
+    flex: 1, // ให้ imageContainer ยืดขยายให้เต็มพื้นที่
+    marginRight: 10, // เพิ่ม margin ขวาเพื่อแยกกับ textContainer
+  } as ViewStyle,
+
+  textContainer: {
+    flex: 2, // ให้ textContainer ยืดขยายให้เต็มพื้นที่
+  } as ViewStyle,
+
+  partyImage: {
+    resizeMode: "contain",
+    aspectRatio: 1 / 1,
+    borderRadius: 10,
+  } as ImageStyle,
+
+  partyName: {
+    fontSize: 12,
+  } as TextStyle,
+
+  icons: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  } as ViewStyle,
   topBar: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -320,46 +365,17 @@ const styles = {
     justifyContent: "space-between",
   } as ViewStyle,
 
-  partyCard: {
-    width: "45%",
-    backgroundColor: "#ffffff",
-    margin: 10,
-    padding: 30,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    marginHorizontal: 10,
-    marginBottom: 8,
-    flexDirection: "row",
-  } as ViewStyle,
 
-  partyImage: {
-    resizeMode: "contain",
-    aspectRatio: 1 / 1,
-    borderRadius: 10,
-    marginRight: 10,
-  } as ImageStyle,
+
 
   partyDetails: {
     flex: 1,
     justifyContent: "center",
   } as ViewStyle,
 
-  partyName: {
-    fontSize: 12,
-  } as TextStyle,
 
-  icons: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  } as ViewStyle,
+
+
 
   radioButtonContainer: {
     flexDirection: "row",

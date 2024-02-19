@@ -20,7 +20,7 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
   useEffect(() => {
     // Here is where you could fetch credentials from keychain or storage
     // and pre-fill the form fields.
-    setAuthEmail("ignite@infinite.red")
+    setAuthEmail("")
     setAuthPassword("")
 
     // Return a "cleanup" function that React will run when the component unmounts
@@ -327,3 +327,4 @@ const $tapButtonU: ViewStyle = {
 }
 
 export { LoginScreen, SignUpScreen }
+ 
