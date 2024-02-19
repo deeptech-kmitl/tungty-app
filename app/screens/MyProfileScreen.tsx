@@ -4,11 +4,16 @@ import { View, ViewStyle } from "react-native";
 import { AppStackScreenProps } from "app/navigators";
 import { Screen } from "app/components";
 import { Avatar, Text, Button } from "@rneui/base";
-
+import { useNavigation } from '@react-navigation/native';
+import { LoginScreen } from "./Auth-section/auth-section";
 
 interface MyProfileScreenProps extends AppStackScreenProps<"MyProfile"> { }
 
 export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyProfileScreen() {
+  const navigation = useNavigation();
+  const handlePressLogout = () => {
+    // navigation.navigate("Login");
+  };
   return (
     <Screen style={$root} preset="scroll">
       <View style={{ marginTop: '30%' }}>
@@ -31,6 +36,7 @@ export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyPro
           <Text h4 style={{ color: '#4542C1', margin: '5%' }}>เรียนที่คณะเทคโนโลยีสารสนเทศ
             สจล. ปี3 รุ่น 18 ชอบเล่นเกมมาก ชอบเล่นบาสมากชวนเล่นได้ค่ะ </Text>
           <Button
+            onPress={handlePressLogout}
             title="SIGN OUT"
             buttonStyle={{
               backgroundColor: '#FDC319',

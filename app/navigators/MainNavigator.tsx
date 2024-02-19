@@ -5,8 +5,9 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { CreatePartyScreen,FilterPartyPopupScreen } from "../screens"
-import { FindPartyscreen, Profilescreen, } from "../screens"
+import { CreatePartyScreen,FilterPartyPopupScreen, FindPartyScreen } from "../screens"
+import { FindPartyscreen, } from "../screens"
+import { MyProfileScreen } from "../screens"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { MyPartyScreen } from '../screens/My Party/MyPartyScreen';
@@ -20,7 +21,7 @@ export type DemoTabParamList = {
   FindParty: undefined
   JoinPartyPopup: undefined
   FilterPartyPopup: undefined
-  Profile: undefined
+  MyProfile: undefined
   MyParty: undefined
 }
 
@@ -53,17 +54,6 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
-        name="CreateParty"
-        component={CreatePartyScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator.componentsTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="components" color={focused ? colors.tint : undefined} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
         name="MyParty"
         component={MyPartyScreen}
         options={{
@@ -76,7 +66,7 @@ export function DemoNavigator() {
 
       <Tab.Screen
         name="FindParty"
-        component={FindPartyscreen}
+        component={FindPartyScreen}
         options={{
           tabBarLabel: "หาปาร์ตี้",
           tabBarIcon: ({ focused }) => (
@@ -86,8 +76,8 @@ export function DemoNavigator() {
       />
 
       <Tab.Screen
-        name="Profile"
-        component={Profilescreen}
+        name="MyProfile"
+        component={MyProfileScreen}
         options={{
           tabBarLabel: "โปรไฟล์",
           tabBarIcon: ({ focused }) => (
