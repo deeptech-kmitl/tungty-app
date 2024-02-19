@@ -12,7 +12,7 @@ interface MyProfileScreenProps extends AppStackScreenProps<"MyProfile"> { }
 export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyProfileScreen() {
   const navigation = useNavigation();
   const handlePressLogout = () => {
-    // navigation.navigate("Login");
+    navigation.navigate('Login');
   };
   return (
     <Screen style={$root} preset="scroll">

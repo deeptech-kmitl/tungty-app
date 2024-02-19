@@ -29,15 +29,15 @@ const CreatePartyFloatButton: React.FC<CreatePartyFloatButtonProps> = ({ targetS
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 0,
     right: 16,
     zIndex: 2,
   },
   button: {
-    backgroundColor: 'red',
-    width: 80,
-    height: 80,
-    borderRadius: 25,
+    backgroundColor: 'rgb(69, 66, 193)',
+    width: 90,
+    height: 90,
+    borderRadius: 180,
     alignItems: 'center',
     justifyContent: 'center',
   },

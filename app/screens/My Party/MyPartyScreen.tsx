@@ -44,6 +44,48 @@ const partylist: PartyItem[] = [
     people: 23,
     color: "#BEAEFF",
   },
+  {
+    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    people: 8,
+    date: "2023-01-13",
+    color: "#FDE619",
+  },
+  {
+    name: "เล่นเกมกันเพื่อนๆ",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
+    people: 23,
+    color: "#BEAEFF",
+  },
+  {
+    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    people: 8,
+    date: "2023-01-13",
+    color: "#FDE619",
+  },
+  {
+    name: "เล่นเกมกันเพื่อนๆ",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
+    people: 23,
+    color: "#BEAEFF",
+  },
+  {
+    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    people: 8,
+    date: "2023-01-13",
+    color: "#FDE619",
+  },
+  {
+    name: "เล่นเกมกันเพื่อนๆ",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
+    people: 23,
+    color: "#BEAEFF",
+  },
 ]
 
 export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartyScreen() {

@@ -114,6 +114,17 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
       <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
       <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
+      <Stack.Screen name="Login" component={Screens.LoginScreen} />
+      <Stack.Screen
+            name="Signup"
+            component={SignUpScreen}
+            options={{
+              headerShown: true,
+              title: "",
+              headerBackTitleVisible: false,
+            }}
+          />
+  
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

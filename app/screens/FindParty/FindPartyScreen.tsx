@@ -48,6 +48,38 @@ const partylist: PartyItem[] = [
     color: "#BEAEFF",
     category: "บันเทิง",
   },
+  {
+    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    people: 8,
+    date: "2023-01-13",
+    color: "#FDE619",
+    category: "อาหาร",
+  },
+  {
+    name: "เล่นเกมกันเพื่อนๆ",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
+    people: 23,
+    color: "#BEAEFF",
+    category: "บันเทิง",
+  },
+  {
+    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
+    people: 8,
+    date: "2023-01-13",
+    color: "#FDE619",
+    category: "อาหาร",
+  },
+  {
+    name: "เล่นเกมกันเพื่อนๆ",
+    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
+    date: "2016-04-10",
+    people: 23,
+    color: "#BEAEFF",
+    category: "บันเทิง",
+  },
   // Add more items with different categories
 ];
 
@@ -110,8 +142,9 @@ export const FindPartyScreen: FC<FindPartyScreenProps> = observer(
     ];
 
     return (
+      <View style={{ flex: 1 }}>
       <Screen style={$root} preset="scroll">
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.topBar}>
             <TouchableOpacity
               onPress={() => {
@@ -181,10 +214,12 @@ export const FindPartyScreen: FC<FindPartyScreenProps> = observer(
                 numColumns={1}
               />
             </View>
-            <CreatePartyFloatButton targetScreen="CreateParty" />
           </ScrollView>
         </Screen>
-
+        <View style={styles.createPartyButtonContainer}>
+    <CreatePartyFloatButton targetScreen="CreateParty" />
+  </View>
+  </View>
       )
 })
 const $root: ViewStyle = {
@@ -284,46 +319,26 @@ const styles = {
     alignItems: 'center',
   } as ViewStyle,
 
-  partyCard: {
-    // width: "80%", // เพิ่มคำสั่งนี้
-    backgroundColor: "#ffffff",
-    margin: 10,
-    padding: 30,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    marginBottom: 8,
-  } as ViewStyle,
+  // partyCard: {
+  //   // width: "80%", // เพิ่มคำสั่งนี้
+  //   backgroundColor: "#ffffff",
+  //   margin: 10,
+  //   padding: 30,
+  //   borderRadius: 10,
+  //   elevation: 4,
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2,
+  //   },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 3.84,
+  //   marginBottom: 8,
+  // } as ViewStyle,
 
-  partyImage: {
-    resizeMode: "contain",
-    aspectRatio: 1 / 1, // รักษาองค์ประกอบที่แน่นอนเพื่อรักษาสัดส่วน
-    width: 60, // ปรับขนาดของภาพลงเป็น 60 หรือตามต้องการ
-    height: 60, // ปรับขนาดของภาพลงเป็น 60 หรือตามต้องการ
-    borderRadius: 10,
-    marginRight: 10,
-  } as ImageStyle,
 
-  partyDetails: {
-    flex: 1,
-    justifyContent: "center",
-  } as ViewStyle,
 
-  partyName: {
-    fontSize: 12,
-  } as TextStyle,
 
-  icons: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  } as ViewStyle,
 
   radioButtonContainer: {
     flexDirection: 'column',
@@ -360,5 +375,53 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
   } as ViewStyle,
-  
+
+
+  createPartyButtonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  } as ViewStyle,
+
+  partyCard: {
+    backgroundColor: "#ffffff",
+    flexDirection: 'row', // เพิ่ม flexDirection เป็น 'row'
+    alignItems: 'center', // จัดให้ภาพและตัวอักษรอยู่ตรงกลางกัน
+    marginHorizontal: 10, // เปลี่ยนจาก margin เป็น marginHorizontal
+    marginBottom: 8,
+    borderRadius: 10,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    height: 120,
+    padding: 10, 
+  } as ViewStyle,
+
+  partyImage: {
+    resizeMode: "contain",
+    aspectRatio: 1 / 1, // รักษาสัดส่วนเดิมของภาพ
+    width: 60, // ปรับขนาดของภาพ
+    height: 60, // ปรับขนาดของภาพ
+    borderRadius: 10,
+    marginRight: 10,
+  } as ImageStyle,
+
+  partyDetails: {
+    flex: 1, // ทำให้เต็มพื้นที่ในแนวแกน X
+  } as ViewStyle,
+
+  partyName: {
+    fontSize: 12,
+  } as TextStyle,
+
+  icons: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  } as ViewStyle,
 }
