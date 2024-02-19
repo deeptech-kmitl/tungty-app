@@ -49,10 +49,11 @@ export type AppStackParamList = {
   JoinPartyPopup: undefined;
   FilterPartyPopup: undefined;
   // 🔥 Your screens go here
+  MyParty: undefined;
   MyProfile: undefined
   EditProfile: undefined
-  MyParty: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Party: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -87,9 +88,7 @@ const AppStack = observer(function AppStack() {
     >
       {isAuthenticated ? (
         <>
-          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
-          <Stack.Screen name="Demo" component={DemoNavigator} /> */}
+          <Stack.Screen name="Demo" component={DemoNavigator} />
         </>
       ) : (
         <>
@@ -112,6 +111,8 @@ const AppStack = observer(function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="Party" component={Screens.PartyScreen} />
+      <Stack.Screen name="MyParty" component={Screens.MyPartyScreen} />
       <Stack.Screen name="MyProfile" component={Screens.MyProfileScreen} />
       <Stack.Screen name="EditProfile" component={Screens.EditProfileScreen} />
       <Stack.Screen name="CreateParty" component={Screens.CreatePartyScreen} />
@@ -120,7 +121,9 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="FindParty" component={Screens.FindPartyScreen} />
       <Stack.Screen name="JoinPartyPopup" component={Screens.JoinPartyPopupScreen} />
       <Stack.Screen name="FilterPartyPopup" component={Screens.FilterPartyPopupScreen} />
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      {
+      /* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */
+      }
     </Stack.Navigator>
   )
 })

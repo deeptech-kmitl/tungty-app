@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
   View,
@@ -9,79 +9,124 @@ import {
   Image,
   FlatList,
   ImageStyle,
-  ScrollView,
   Modal,
+  ActivityIndicator,
 } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Screen, Text } from "app/components"
+import { Header, Screen, Text } from "app/components"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import Octicons from "react-native-vector-icons/Octicons"
 import { RadioButton } from "react-native-paper"
+import * as Navigation from "./../../navigators/navigationUtilities"
+// import { array } from "mobx-state-tree/dist/internal"
 
-interface PartyItem {
-  name: string
-  imagepath: string
-  people: number
-  date: string
+// interface PartyItem {
+//   name: string
+//   imagepath: string
+//   people: number
+//   date: string
+//   color: string
+// }
+interface Partyfetch {
+  partyId: string
+  partyCode: string
+  partyOwner: string
+  partyName: string
+  partyDescription: string
+  partyType: string
+  partyCategory: string
+  appointmentDate: string
+  appointmentTime: string
+  memberAmount: number
+  memberList: Array<string>
+  createDateTime: string
+  updateDateTime: string
   color: string
+  imagepath: string
 }
 
 interface MyPartyScreenProps extends AppStackScreenProps<"MyParty"> {}
+const userId = "Rawipas"
 
-const partylist: PartyItem[] = [
-  {
-    name: "เราพวกผองชาวสจล.ไปหาข้าวกิน...",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png",
-    people: 8,
-    date: "2023-01-13",
-    color: "#FDE619",
-  },
-  {
-    name: "เล่นเกมกันเพื่อนๆ",
-    imagepath: "https://cdn-icons-png.flaticon.com/512/5779/5779819.png ",
-    date: "2016-04-10",
-    people: 23,
-    color: "#BEAEFF",
-  },
-]
+export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartyScreen(this: any) {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedOption, setSelectedOption] = useState("")
+  const [search, setSearch] = useState("")
+  const [partylist, setPartylist] = useState<Partyfetch[]>([])
+  const [renderList, setRenderList] = useState<Partyfetch[]>(partylist)
+  const [loading, setLoading] = useState(true)
 
-export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartyScreen() {
+  useEffect(() => {
+    // fetch every minute
+    fetchPartyData()
+
+    setInterval(() => {
+      fetchPartyData()
+    }, 60000)
+  }, [])
+
   // Handle search functionality
   const handleSearch = (search: string) => {
-    // Implement your search logic here
-    console.log(search)
-    const searchResult = partylist.filter((element) => element.name.toLowerCase().includes(search.toLowerCase()));
-    console.log(searchResult)
-    setRenderList(searchResult)
+    const filteredList = partylist.filter((element) =>
+      element.partyName.toLowerCase().includes(search.toLowerCase()),
+    )
+    const updatedRenderList = filteredList.length > 0 ? filteredList : renderList
+    setRenderList(updatedRenderList)
   }
 
   // Handle sorting/filtering functionality
   const handleSortFilter = (value: string) => {
     if (value === "popular") {
-      renderList.sort((b, a) => a.people - b.people)
+      renderList.sort((b, a) => a.memberList.length - b.memberList.length)
     } else if (value === "newest") {
-      renderList.sort((b, a) => Date.parse(a.date) - Date.parse(b.date))
-    }
-    else {
-      renderList.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+      renderList.sort((b, a) => Date.parse(a.createDateTime) - Date.parse(b.createDateTime))
+    } else {
+      renderList.sort((a, b) => Date.parse(a.createDateTime) - Date.parse(b.createDateTime))
     }
     setModalVisible(!modalVisible)
   }
 
-  const [modalVisible, setModalVisible] = useState(false)
-  const [selectedOption, setSelectedOption] = useState("")
-  const [search,  setSearch] = useState("")
-  const [renderList, setRenderList] = useState<PartyItem[]>(partylist);
+  // fetch from backend
+  const fetchPartyData = async () => {
+    try {
+      const response = await fetch(`http://192.168.1.107:8083/party/myParty/${userId}`)
+      console.log(response.status)
+      const data = await response.json()
+      setPartylist(data)
+      setRenderList(data)
+      console.log(data)
+      setLoading(false)
+    } catch (error) {
+      console.log("error" + error)
+      setLoading(false)
+    }
+  }
 
-  const renderPartyCard = ({ item }: { item: PartyItem }) => (
-    <TouchableOpacity style={[styles.partyCard, { backgroundColor: item.color }]}>
-      <Image source={{ uri: item.imagepath }} style={styles.partyImage} />
+  if (loading) {
+    return (
+      <Screen style={$root}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </Screen>
+    )
+  }
+
+  // renderItem for flatList
+  const renderPartyCard = ({ item }: { item: Partyfetch }) => (
+    <TouchableOpacity
+      style={[styles.partyCard, { backgroundColor: "#A0B0FE" }]}
+      onPress={() => Navigation.navigate("Party", { item: item })}
+    >
+      <Image
+        source={{ uri: "https://cdn-icons-png.flaticon.com/512/1719/1719420.png" }}
+        style={styles.partyImage}
+      />
       <View style={styles.partyDetails}>
-        <Text style={styles.partyName}>{item.name}</Text>
+        <Text style={styles.partyName} numberOfLines={2}>
+          {item.partyName}
+        </Text>
         <View style={styles.icons}>
           <FontAwesome name="user" size={20} color="#FFC107" />
-          <Text>{item.people}</Text>
+          <Text>{item.memberList.length}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -89,88 +134,81 @@ export const MyPartyScreen: FC<MyPartyScreenProps> = observer(function MyPartySc
 
   return (
     <Screen style={$root} preset="scroll">
-      <ScrollView>
-        <View style={styles.topBar}>
-          <TouchableOpacity
-            onPress={() => {
-              /* Handle bell icon press */
-            }}
-          >
-            <MaterialCommunityIcons name="bell-ring" size={30} color="#FFC107" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.searchBar}>
-          <TextInput style={styles.input} onChangeText={setSearch} placeholder="Search" />
-          <TouchableOpacity
-            onPress={() => {
-              handleSearch(search)
-            }}
-          >
-            <View style={styles.searchIcon}>
-              <FontAwesome name="search" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.titleNSorting}>
-          <Text style={styles.titlePage}>ปาร์ตี้ของฉัน</Text>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Octicons name="sort-desc" size={42} color="black" />
-          </TouchableOpacity>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible)
-            }}
-          >
-            <View style={styles.modalView}>
-              <View style={styles.modalTop}>
-                <Text style={styles.modalText}>Sort by</Text>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                  <FontAwesome name="close" size={40} color="white" />
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.radioButtonContainer}>
-                <RadioButton.Group
-                  onValueChange={(value) => setSelectedOption(value)}
-                  value={selectedOption}
-                >
-                  <View style={styles.radioButton}>
-                    <RadioButton.Android value="popular" color="white" />
-                    <Text style={styles.radioText}>ยอดนิยม</Text>
-                  </View>
-                  <View style={styles.radioButton}>
-                    <RadioButton.Android value="newest" color="white" />
-                    <Text style={styles.radioText}>ใหม่ล่าสุด</Text>
-                  </View>
-                  <View style={styles.radioButton}>
-                    <RadioButton.Android value="oldest" color="white" />
-                    <Text style={styles.radioText}>เก่าที่สุด</Text>
-                  </View>
-                </RadioButton.Group>
-              </View>
-
-              <TouchableOpacity onPress={() => handleSortFilter(selectedOption)}>
-                <View style={styles.confirmButton}>
-                  {/* RadioButton */}
-                  <Text>Okay</Text>
-                </View>
+      <Header
+        rightIcon="bell"
+        rightIconColor="#FFC107"
+        onRightPress={() => {}}
+        backgroundColor="#4542C1"
+      >
+      </Header>
+      <View style={styles.searchBar}>
+        <TextInput style={styles.input} onChangeText={setSearch} placeholder="Search" />
+        <TouchableOpacity
+          onPress={() => {
+            handleSearch(search)
+          }}
+        >
+          <View style={styles.searchIcon}>
+            <FontAwesome name="search" size={24} color="black" />
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.titleNSorting}>
+        <Text style={styles.titlePage}>ปาร์ตี้ของฉัน</Text>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Octicons name="sort-desc" size={42} color="black" />
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible)
+          }}
+        >
+          <View style={styles.modalView}>
+            <View style={styles.modalTop}>
+              <Text style={styles.modalText}>Sort by</Text>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                <FontAwesome name="close" size={40} color="white" />
               </TouchableOpacity>
             </View>
-          </Modal>
-        </View>
-        <View>
-          <FlatList
-            key={renderList.length}
-            data={renderList}
-            renderItem={renderPartyCard}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-          />
-        </View>
-      </ScrollView>
+
+            <View style={styles.radioButtonContainer}>
+              <RadioButton.Group
+                onValueChange={(value) => setSelectedOption(value)}
+                value={selectedOption}
+              >
+                <View style={styles.radioButton}>
+                  <RadioButton.Android value="popular" color="white" />
+                  <Text style={styles.radioText}>ยอดนิยม</Text>
+                </View>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android value="newest" color="white" />
+                  <Text style={styles.radioText}>ใหม่ล่าสุด</Text>
+                </View>
+                <View style={styles.radioButton}>
+                  <RadioButton.Android value="oldest" color="white" />
+                  <Text style={styles.radioText}>เก่าที่สุด</Text>
+                </View>
+              </RadioButton.Group>
+            </View>
+
+            <TouchableOpacity onPress={() => handleSortFilter(selectedOption)}>
+              <View style={styles.confirmButton}>
+                {/* RadioButton */}
+                <Text>Okay</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        data={renderList}
+        renderItem={renderPartyCard}
+        numColumns={2}
+      />
     </Screen>
   )
 })
@@ -181,24 +219,16 @@ const $root: ViewStyle = {
 }
 
 const styles = {
-  topBar: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "#4542C1",
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  } as ViewStyle,
-
   searchBar: {
     flexDirection: "row",
-    marginTop: 16,
+    marginTop: "10%",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
     marginHorizontal: 8,
+  } as ViewStyle,
+  container: {
+    flex: 1,
   } as ViewStyle,
 
   input: {
@@ -280,27 +310,24 @@ const styles = {
 
   partyCard: {
     width: "45%",
-    backgroundColor: "#ffffff",
     margin: 10,
-    padding: 30,
+    padding: "8%",
     borderRadius: 10,
-    elevation: 4,
+    elevation: 6,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 3,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.7,
     shadowRadius: 3.84,
     marginHorizontal: 10,
-    marginBottom: 8,
     flexDirection: "row",
   } as ViewStyle,
 
   partyImage: {
     resizeMode: "contain",
-    aspectRatio: 1 / 1,
-    borderRadius: 10,
+    width: "50%",
     marginRight: 10,
   } as ImageStyle,
 

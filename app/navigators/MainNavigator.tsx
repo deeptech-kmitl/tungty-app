@@ -5,23 +5,21 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { CreatePartyScreen,FilterPartyPopupScreen } from "../screens"
-import { FindPartyscreen, Profilescreen, } from "../screens"
+import { CreatePartyScreen } from "../screens"
+import { FindPartyscreen, Profilescreen } from "../screens"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { MyPartyScreen } from '../screens/My Party/MyPartyScreen';
 
 export type DemoTabParamList = {
-  DemoShowroom: { queryIndex?: string; itemIndex?: string }
-  DemoDebug: undefined
   DemoPodcastList: undefined
   CreateParty: undefined
-  // PartyInfo: undefined
   FindParty: undefined
   JoinPartyPopup: undefined
   FilterPartyPopup: undefined
   Profile: undefined
   MyParty: undefined
+  Party: undefined
 }
 
 
