@@ -20,8 +20,8 @@ import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./MainNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
-import { LoginScreen } from "../screens/Auth-section/auth-section"
 import { SignUpScreen } from "../screens/Auth-section/auth-section"
+import { LoginScreen } from "app/screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -83,22 +83,16 @@ const AppStack = observer(function AppStack() {
           backgroundColor: "#4542C1",
         },
       }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
+      initialRouteName={isAuthenticated ? "FindParty" : "Login"}
     >
       {isAuthenticated ? (
         <>
-          {/* <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-
-          <Stack.Screen name="Demo" component={DemoNavigator} /> */}
+          <Stack.Screen name="Demo" component={DemoNavigator} />
         </>
       ) : (
         <>
-          {/* <Stack.Screen name="Login" component={Screens.LoginScreen} /> */}
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-          />
-
+          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          {/* <Stack.Screen name="Login" component={LoginScreen}/> */}
           <Stack.Screen
             name="Signup"
             component={SignUpScreen}
