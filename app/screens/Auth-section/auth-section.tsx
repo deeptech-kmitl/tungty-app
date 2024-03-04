@@ -9,18 +9,18 @@ interface LoginProps extends AppStackScreenProps<"Login"> {}
 
 const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
   // const LoginScreen = () => {
-  const [AuthPassword, setAuthPassword] = useState("")
+  // const [authPassword, setAuthPassword] = useState("")
   // const [isSubmitted, setIsSubmitted] = useState(false)
   const [attemptsCount, setAttemptsCount] = useState(0)
-  const [validationError, setValidationError] = useState("")
+  // const [validationError, setValidationError] = useState("")
   const {
-    authenticationStore: { authEmail, setAuthEmail, setAuthToken },
+    authenticationStore: { authEmail, setAuthEmail, setAuthToken, authPassword, setAuthPassword, validationError },
   } = useStores()
 
   useEffect(() => {
     // Here is where you could fetch credentials from keychain or storage
     // and pre-fill the form fields.
-    setAuthEmail("ignite@infinite.red")
+    setAuthEmail("")
     setAuthPassword("")
 
     // Return a "cleanup" function that React will run when the component unmounts
@@ -35,7 +35,7 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
   function goNext() {
     setAuthPassword("")
     setAuthEmail("")
-    setValidationError("")
+    // setValidationError("")
     navigation.navigate("Signup")
   }
 
@@ -44,12 +44,25 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
     setAttemptsCount(attemptsCount + 1)
 
     // Basic validation: Check if email and password are not empty
-    if (!authEmail || !AuthPassword) {
-      setValidationError("Email and password are required.")
-      return
-    }
+    // if (authEmail.length === 0) {
+    //   setValidationError("Email can't be blank")
+    //   return
+    // }
+    // if (authEmail.length < 6) {
+    //   setValidationError("Email must be at least 6 characters")
+    //   return 
+    // }
+    // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authEmail)) {
+    //   setValidationError("Email must be a valid email address")
+    //   return 
+    // }
+    // if (!authEmail || !AuthPassword) {
+    //   setValidationError("Email and password are required.")
+    //   return
+    // }
 
-    setValidationError("")
+    if (validationError) return
+    
     // You can add more sophisticated validation here if needed
 
     // If validation passes, attempt login
@@ -57,9 +70,6 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
   }
 
   function authenticateUser() {
-    // setIsSubmitted(true)
-    // setAttemptsCount(attemptsCount + 1)
-
     // Make a request to your server to get an authentication token.
     // If successful, reset the fields and set the token.
     // setIsSubmitted(false)
@@ -94,7 +104,7 @@ const LoginScreen: FC<LoginProps> = observer(function Login(_props) {
         Password
       </Text>
       <TextInput
-        value={AuthPassword}
+        value={authPassword}
         onChangeText={setAuthPassword}
         style={{ ...$textField, fontWeight: "bold", fontSize: 18 }}
         autoCapitalize="none"

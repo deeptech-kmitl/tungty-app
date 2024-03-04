@@ -5,16 +5,17 @@ export const AuthenticationStoreModel = types
   .props({
     authToken: types.maybe(types.string),
     authEmail: "",
+    authPassword: ""
   })
   .views((store) => ({
     get isAuthenticated() {
       return !!store.authToken
     },
     get validationError() {
-      if (store.authEmail.length === 0) return "can't be blank"
-      if (store.authEmail.length < 6) return "must be at least 6 characters"
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(store.authEmail))
-        return "must be a valid email address"
+      if ( (!store.authEmail || !store.authPassword) ) return "Email and password are required."
+      if (store.authEmail.length < 6) return "Email must be at least 6 characters"
+      // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(store.authEmail))
+      //   return "Email must be a valid email address"
       return ""
     },
   }))
@@ -25,9 +26,13 @@ export const AuthenticationStoreModel = types
     setAuthEmail(value: string) {
       store.authEmail = value.replace(/ /g, "")
     },
+    setAuthPassword(value: string) {
+      store.authPassword = value.replace(/ /g, "")
+    },
     logout() {
       store.authToken = undefined
       store.authEmail = ""
+      store.authPassword = ""
     },
   }))
 
