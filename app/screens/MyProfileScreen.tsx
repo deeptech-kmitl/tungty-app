@@ -9,11 +9,11 @@ import { LoginScreen } from "./Auth-section/auth-section";
 
 interface MyProfileScreenProps extends AppStackScreenProps<"MyProfile"> { }
 
-export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyProfileScreen() {
-  const navigation = useNavigation();
-  const handlePressLogout = () => {
-    navigation.navigate('Login');
-  };
+export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyProfileScreen(_props) {
+  const { navigation } = _props
+  const goNext=() => {
+    navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
+  }
   return (
     <Screen style={$root} preset="scroll">
       <View style={{ marginTop: '30%' }}>
@@ -36,7 +36,7 @@ export const MyProfileScreen: FC<MyProfileScreenProps> = observer(function MyPro
           <Text h4 style={{ color: '#4542C1', margin: '5%' }}>เรียนที่คณะเทคโนโลยีสารสนเทศ
             สจล. ปี3 รุ่น 18 ชอบเล่นเกมมาก ชอบเล่นบาสมากชวนเล่นได้ค่ะ </Text>
           <Button
-            onPress={handlePressLogout}
+            onPress={goNext}
             title="SIGN OUT"
             buttonStyle={{
               backgroundColor: '#FDC319',
